@@ -20,10 +20,10 @@ The project also includes automated tests using pytest and QtBot to ensure the a
 - `Task.py`: The main application file. Contains the GUI setup, function parsing, plotting logic, and application styles.
 
 **test_Plotting.py (Provide a Predefined Inputs to check the validation of the Application)**:
-- `test_invalid_func_format.py`: Test function for invalid function formats **Failed Test**.
-- `test_valid_func_format.py`: Test function for valid function formats **Passed Test**.
-- `test_valid_X_values.py`: Test function for valid x-values  **Passed Test**.
-- `test_invalid_X_values.py`: Test function for invalid x-values **Failed Test**.
+- `test_invalid_func_format.py`: Test function for invalid function formats **( Failed Test )**.
+- `test_valid_func_format.py`: Test function for valid function formats **( Passed Test )**.
+- `test_valid_X_values.py`: Test function for valid x-values  **( Passed Test )**.
+- `test_invalid_X_values.py`: Test function for invalid x-values **( Failed Test )**.
 
 **To Run Tests**:
 - Open a terminal or command prompt.
