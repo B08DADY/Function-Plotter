@@ -26,9 +26,9 @@ The project also includes automated tests using pytest and QtBot to ensure the a
 - `test_invalid_X_values.py`: Test function for invalid x-values.
 
 **To Run Tests**:
-1- Open a terminal or command prompt.
-2- Navigate to the directory where the project files are located and run **cd path/to/your/project** .
-3- Run the tests By Putting  **pytest** in the terminal.
+- Open a terminal or command prompt.
+- Navigate to the directory where the project files are located and run **cd path/to/your/project** .
+- Run the tests By Putting  **pytest** in the terminal.
 
 
 ## Requirements
