@@ -27,9 +27,9 @@ The project also includes automated tests using pytest and QtBot to ensure the a
 
 **To Run Tests**:
 - Open a terminal or command prompt.
-- Navigate to the directory where the project files               cd path/to/your/project  .
+- Navigate to the directory where the project files cd `path/to/your/project`.
   
-- Run the tests By Putting  **pytest**   in the terminal.
+- Run the tests By Putting  `pytest`   in the terminal.
 
 
 ## Requirements
