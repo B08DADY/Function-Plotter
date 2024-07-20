@@ -32,11 +32,11 @@ The project also includes automated tests using pytest and QtBot to ensure the a
 
 ### To Run App And Install the required libraries:
 - Open a terminal or command prompt.
-- Install Install By `pip install virtualenv`
-- Create a Virtual Environment `virtualenv myenv`
-- Activate the Virtual Environment `myenv\Scripts\activate`
-- Navigate to the directory where the project files cd `path/to/your/project`.
-- ***Installing Requirements*** `pip install -r requirements.txt`
+- Install Virtual Environment  `pip install virtualenv`.
+- Create a Virtual Environment `virtualenv myenv`.
+- Activate the Virtual Environment `myenv\Scripts\activate`.
+- Navigate to the directory where the project files `cd path/to/your/project`.
+- ***Installing Requirements*** `pip install -r requirements.txt`.
 - Finally run the App `python Task.py`
 
 ### To Run Automated Tests :
