@@ -25,11 +25,11 @@ The project also includes automated tests using pytest and QtBot to ensure the a
 - `test_valid_X_values.py`: Test function for valid x-values  **( Passed Test )**.
 - `test_invalid_X_values.py`: Test function for invalid x-values **( Failed Test )**.
 
-**To Run Tests**:
+**To Run Automated Tests**:
 - Open a terminal or command prompt.
 - Navigate to the directory where the project files cd `path/to/your/project`.
-  
 - Run the tests By Putting  `pytest`   in the terminal.
+- ***DO NOT CLOSE THE APP***
 
 
 ## Requirements
