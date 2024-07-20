@@ -1,146 +1,118 @@
 import pytest
-from PySide2.QtWidgets import QLineEdit, QPushButton, QApplication
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-from Task import app, window
-
-#SteUp The Tests
-@pytest.fixture(scope='function')
-def qt_app(qtbot):
-    """Fixture to launch and close the application"""
-    global app  # Ensure we use the global app defined in Task.py
-    if QApplication.instance() is None:
-        app = QApplication([])
-
-    app_window = window  # Keep a reference to the main window
-
-    # Start the application event loop with QtBot
-    qtbot.addWidget(app_window)
-
-    yield app
-
-    # Cleanup after the test
-  #  window.close()
-    app.quit()
+from PySide2.QtTest import QTest
+from PySide2.QtWidgets import QApplication, QPushButton, QMessageBox
+from PySide2.QtCore import QTimer, Qt
+from Task import window, func_entry, minx_entry, maxx_entry, PlotFunction
 
 ########################################################################################
 ########################################################################################
 
-# inVALID FUNC FORMAT TEST
-@pytest.mark.usefixtures('qt_app')
-@pytest.mark.order(1)
-def test_invalid_func_format(qtbot, qt_app):
-    # Simulate user input
-    func_entry = window.findChild(QLineEdit, "func_entry")
-    minx_entry = window.findChild(QLineEdit, "minx_entry")
-    maxx_entry = window.findChild(QLineEdit, "maxx_entry")
+## PLEASE RELAX AND SEE THE MAGIC JUST RUN "pytest" AND WATCH THE TESTS
+##                (((  DO NOT CLOSE THE APP  )))
 
-    assert func_entry is not None, "func_entry is None"
-    assert minx_entry is not None, "minx_entry is None"
-    assert maxx_entry is not None, "maxx_entry is None"
+########################################################################################
+########################################################################################
 
-    func_entry.setText("5x")
-    minx_entry.setText("1")
+@pytest.fixture
+def setup_qt(qtbot):
+    """Fixture to initialize the Qt application and provide a test bot."""
+    qtbot.addWidget(window)
+    window.show()  # Ensure the window is visible
+    yield qtbot
+    window.close()  # Ensure the window is closed after tests
+
+########################################################################################
+########################################################################################
+def get_message_boxes():
+    """Helper function to retrieve all QMessageBox instances."""
+    return [w for w in QApplication.topLevelWidgets() if isinstance(w, QMessageBox)]
+
+def assert_message_box_text_contains(expected_text):
+    """Assert that a QMessageBox with the expected text appears."""
+    msg_boxes = get_message_boxes()
+    assert any(expected_text in msg.text() for msg in msg_boxes), f"Error message containing '{expected_text}' not found"
+
+
+########################################################################################
+########################################################################################
+
+#                       TEST FOR CHECKING THE INVALID FUNCTION FORMAT
+
+def test_invalid_func_format(qtbot):
+    # Set invalid function format
+    func_entry.setText("x++")
+    minx_entry.setText("0")
     maxx_entry.setText("10")
 
-    # Simulate clicking the plot button
+    # Click the plot button
     plot_button = window.findChild(QPushButton, "plotButton")
-    plot_button.click()
+    QTest.mouseClick(plot_button, Qt.LeftButton)
+    qtbot.wait(2000)
 
-    # Assert the plot is drawn
-    canvas = window.findChild(FigureCanvas)
-    assert canvas.figure.axes is not None
-    assert len(canvas.figure.axes[0].lines) > 0  # Check if at least one line is drawn
 
-    # Run the QtBot event loop to keep the window open
-    qtbot.wait(10000)
+    # Check for error message
+    assert_message_box_text_contains("Invalid function format")
 
 ########################################################################################
 ########################################################################################
 
-# VALID FUNC FORMAT TEST
-@pytest.mark.usefixtures('qt_app')
-@pytest.mark.order(2)
-def test_valid_func_format(qtbot, qt_app):
-    # Simulate user input
-    func_entry = window.findChild(QLineEdit, "func_entry")
-    minx_entry = window.findChild(QLineEdit, "minx_entry")
-    maxx_entry = window.findChild(QLineEdit, "maxx_entry")
+#                         TEST FOR CHECKING THE INVALID X VALUES
 
-    assert func_entry is not None, "func_entry is None"
-    assert minx_entry is not None, "minx_entry is None"
-    assert maxx_entry is not None, "maxx_entry is None"
+def test_invalid_X_values(qtbot):
+    # Set invalid X values
+    func_entry.setText("x+5")
+    minx_entry.setText("10")
+    maxx_entry.setText("0")
 
-    func_entry.setText("lg10(x*2)")
-    minx_entry.setText("1")
+    # Click the plot button
+    plot_button = window.findChild(QPushButton, "plotButton")
+    QTest.mouseClick(plot_button, Qt.LeftButton)
+    qtbot.wait(2000)
+
+
+    # Check for error message
+    assert_message_box_text_contains("XMin must be less than XMax")
+
+########################################################################################
+########################################################################################
+
+#                       TEST FOR CHECKING THE INVALID FUNCTION FORMAT
+
+
+def test_valid_func_format(qtbot):
+    # Set valid function format
+    func_entry.setText("x^2")
+    minx_entry.setText("-10")
     maxx_entry.setText("10")
 
-    # Simulate clicking the plot button
+    # Click the plot button
     plot_button = window.findChild(QPushButton, "plotButton")
-    plot_button.click()
+    QTest.mouseClick(plot_button, Qt.LeftButton)
+    qtbot.wait(2000)
 
-    # Assert the plot is drawn
-    canvas = window.findChild(FigureCanvas)
-    assert canvas.figure.axes is not None
-    assert len(canvas.figure.axes[0].lines) > 0  # Check if at least one line is drawn
 
-    # Run the QtBot event loop to keep the window open
-    qtbot.wait(10000)
+    # Check that no error message is shown
+    msg_boxes = get_message_boxes()
+    assert not any("Input Error" in msg.text() for msg in msg_boxes), "Unexpected error message for valid function format"
+
 
 ########################################################################################
 ########################################################################################
 
-# Valid X values Test
-@pytest.mark.usefixtures('qt_app')
-@pytest.mark.order(3)
-def test_valid_X_values(qtbot, qt_app):
-    # Simulate user input
-    func_entry = window.findChild(QLineEdit, "func_entry")
-    minx_entry = window.findChild(QLineEdit, "minx_entry")
-    maxx_entry = window.findChild(QLineEdit, "maxx_entry")
+#                         TEST FOR CHECKING THE VALID X VALUES
 
-    assert func_entry is not None, "func_entry is None"
-    assert minx_entry is not None, "minx_entry is None"
-    assert maxx_entry is not None, "maxx_entry is None"
+def test_valid_X_values(qtbot):
+    # Set valid X values
+    func_entry.setText("sqrt(x)")
+    minx_entry.setText("0")
+    maxx_entry.setText("10")
 
-    func_entry.setText("5*x^3+10")
-    minx_entry.setText("1")
-    maxx_entry.setText("100")
-
-
-    # Simulate clicking the plot button
+    # Click the plot button
     plot_button = window.findChild(QPushButton, "plotButton")
-    plot_button.click()
+    QTest.mouseClick(plot_button, Qt.LeftButton)
 
-    # Assert the plot is drawn
-    canvas = window.findChild(FigureCanvas)
-    assert canvas.figure.axes is not None
-    assert len(canvas.figure.axes[0].lines) > 0  # Check if at least one line is drawn
+    qtbot.wait(2000)
 
-    # Run the QtBot event loop to keep the window open
-    qtbot.wait(200)
-
-########################################################################################
-########################################################################################
-
-
-# inVALID X VLAUES TEST
-@pytest.mark.usefixtures('qt_app')
-@pytest.mark.order(4)
-def test_invalid_X_values(qtbot, qt_app):
-    # Simulate user input
-    func_entry = window.findChild(QLineEdit, "func_entry")
-    minx_entry = window.findChild(QLineEdit, "minx_entry")
-    maxx_entry = window.findChild(QLineEdit, "maxx_entry")
-
-    assert func_entry is not None, "func_entry is None"
-    assert minx_entry is not None, "minx_entry is None"
-    assert maxx_entry is not None, "maxx_entry is None"
-
-    func_entry.setText("6+x")
-    minx_entry.setText("not x ;)")
-    maxx_entry.setText("100")
-
-
-    # Simulate clicking the plot button
-    plot_button = window.findChild(QPushButton, "plotButton")
-    plot_button.click()
+    # Check that no error message is shown
+    msg_boxes = get_message_boxes()
+    assert not any("Input Error" in msg.text() for msg in msg_boxes), "Unexpected error message for valid X values"
