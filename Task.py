@@ -11,7 +11,9 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 ########################################################################################
 
 
-# Function to get and validate X values
+#                       FUNCTION TO GET AND VALIDATE  X  VALUES
+
+
 def GetMaxMinX ():
     min_x_str = minx_entry.text()
     max_x_str = maxx_entry.text()
@@ -32,7 +34,9 @@ def GetMaxMinX ():
 ########################################################################################
 ########################################################################################
 
-# Function to plot a function of x
+#                         FUNCTION TO PLOT A FUNCTION OF X
+
+
 def PlotFunction():
     func_str = func_entry.text().lower()
     # Convert ^ to ** for Python evaluation
@@ -81,7 +85,7 @@ def PlotFunction():
 ########################################################################################
 ########################################################################################
 
-# Set Upp The window
+#                              SETTING UP THE WINDOW
 
 app = QApplication([])
 
@@ -231,7 +235,7 @@ window.show()
 ########################################################################################
 
 
-# Initiate The Application
+#                             INITIATE THE APPLICATION
 def initialize_application():
     global app  # Make app global (optional)
     if not app:  # Check if app already exists
@@ -241,8 +245,7 @@ def initialize_application():
 ########################################################################################
 ########################################################################################
 
-
-# Call initialize_application() when needed
+#                             START THE APPLICATION
 if __name__ == '__main__':
     initialize_application()
     sys.exit(app.exec_())
