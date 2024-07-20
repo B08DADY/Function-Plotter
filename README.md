@@ -24,19 +24,23 @@ The project also includes automated tests using pytest and QtBot to ensure the a
 - `test_valid_func_format.py`: Test function for valid function formats **( Passed Test )**.
 - `test_valid_X_values.py`: Test function for valid x-values  **( Passed Test )**.
 - `test_invalid_X_values.py`: Test function for invalid x-values **( Failed Test )**.
+  
 
-**To Run Automated Tests**:
+## Requirements
+
+- ***Python 3.10.11***
+
+### To Run App And Install the required libraries:
+- Open a terminal or command prompt.
+- Install Install By `pip install virtualenv`
+- Create a Virtual Environment `virtualenv myenv`
+- Activate the Virtual Environment `myenv\Scripts\activate`
+- Navigate to the directory where the project files cd `path/to/your/project`.
+- ***Installing Requirements*** `pip install -r requirements.txt`
+- Finally run the App `python Task.py`
+
+### To Run Automated Tests :
 - Open a terminal or command prompt.
 - Navigate to the directory where the project files cd `path/to/your/project`.
 - Run the tests By Putting  `pytest`   in the terminal.
 - ***DO NOT CLOSE THE APP***
-
-
-## Requirements
-
-- Python 3.10.11
-
-### Install the required libraries:
-
-```bash
-pip install -r requirements.txt
